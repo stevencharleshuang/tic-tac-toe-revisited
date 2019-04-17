@@ -1,5 +1,48 @@
-* {}
-html {}
+* {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0 auto;
+  text-align: center;
+}
+
 body {
+  font-family: 'Courier New', Courier, monospace;
+  color: white;
   background: black;
+}
+
+.game-area {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0 auto;
+  height: 300px;
+  width: 300px;
+  background: gray;
+}
+
+.tile {
+  border: 1px solid black;
+  background: rgba(255, 255, 255, 1);
+  height: 100px;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-mark {
+  color: black;
+  font-size: 50px;
+  text-transform: capitalize;
+}
+
+.message-box {
+  margin: 10px auto;
+  color: white;
+  width: 50%;
+  height: 100px;
+  border: 1px solid white;
+  border-radius: 5px;
 }
