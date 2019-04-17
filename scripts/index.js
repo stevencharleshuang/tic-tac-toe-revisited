@@ -12,7 +12,8 @@ $(document).ready(() => {
 
   // JS Var Decs
   let boardArr;
-  let curPlayer = 'x';
+  let playerArr = ['x', 'o'];
+  let curPlayer;
   let isGameOver = false;
   let turnCounter = 0;
   let playerXScore = 0;
@@ -66,23 +67,26 @@ $(document).ready(() => {
         $($playerOScoreEl).text(playerOScore.toString());
       }
 
-      // Play again option
-      $body.append(`<div class="play-again noselect">Play Again?</div>`);
-      $playAgain = $('.play-again');
-      $($playAgain).on('click', () => initBoard());
+      addPlayAgainBtn();
     } else if (turnCounter === 8) {
       updateMsg(`It's a draw!`);
-
-      // Play again option
-      $body.append(`<div class="play-again noselect">Play Again?</div>`);
-      $playAgain = $('.play-again');
-      $($playAgain).on('click', () => initBoard());
-
+      addPlayAgainBtn();
     } else {
       player === 'x' ? curPlayer = 'o' : curPlayer = 'x';
       turnCounter += 1;
       updateMsg(`Player ${curPlayer.toUpperCase()}'s move`);
     }
+  };
+
+  /**
+   * @function addPlayAgainBtn
+   * @description Creates a button to restart the game when the game is over and appends it to the document
+   */
+  const addPlayAgainBtn = () => {
+    // Play again option
+    $body.append(`<div class="play-again noselect">Play Again?</div>`);
+    $playAgain = $('.play-again');
+    $($playAgain).on('click', () => initBoard());
   };
 
   /**
@@ -134,7 +138,8 @@ $(document).ready(() => {
    * @function initBoard
    * @description Initializes the Tic Tac Toe board
    */
-  const initBoard = () => { 
+  const initBoard = () => {
+    // If there is already a tic tac toe board created, drop it
     if ($gameArea.children().length > 0) {
       $gameBoard.remove();
       $playAgain.remove();
@@ -142,10 +147,10 @@ $(document).ready(() => {
     // Init the boardArr, create the board, init the player at turn, init isGameOver var, adds event handler to tiles
     boardArr = [];
     createBoard();
-    curPlayer = 'x';
-    updateMsg('Player X\'s move');
     isGameOver = false;
     turnCounter = 0;
+    curPlayer = playerArr[Math.floor(Math.random() * 2)];
+    updateMsg(`Player ${curPlayer.toUpperCase()}'s move`);
     $tile = $('.tile');
     $($tile).on('click', (e) => handleTileClick(e));
   }
