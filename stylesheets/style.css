@@ -75,6 +75,13 @@ body {
   cursor: pointer;
 }
 
+.player-scores {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
 /* https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting */
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */

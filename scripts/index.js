@@ -4,6 +4,8 @@ $(document).ready(() => {
   const $body = $(document.body);
   const $gameArea = $('.game-area');
   const $messageBox = $('.message-box');
+  const $playerXScoreEl = $('#player-x-score');
+  const $playerOScoreEl = $('#player-o-score');
   let $gameBoard;
   let $playAgain;
   let $tile;
@@ -12,6 +14,9 @@ $(document).ready(() => {
   let boardArr;
   let curPlayer = 'x';
   let isGameOver = false;
+  let turnCounter = 0;
+  let playerXScore = 0;
+  let playerOScore = 0;
 
   /**
    * @function createBoard
@@ -34,22 +39,48 @@ $(document).ready(() => {
    */
   const checkWin = (player) => {
     if (
+      // Horizontal line wins
       (boardArr[0] === boardArr[1] && boardArr[1] === boardArr[2]) ||
       (boardArr[3] === boardArr[4] && boardArr[4] === boardArr[5]) ||
       (boardArr[6] === boardArr[7] && boardArr[7] === boardArr[8]) ||
+      // Vertical line wins
       (boardArr[0] === boardArr[3] && boardArr[3] === boardArr[6]) ||
       (boardArr[1] === boardArr[4] && boardArr[4] === boardArr[7]) ||
       (boardArr[2] === boardArr[5] && boardArr[5] === boardArr[8]) ||
+      // Diagonal line wins
       (boardArr[0] === boardArr[4] && boardArr[4] === boardArr[8]) ||
       (boardArr[2] === boardArr[4] && boardArr[4] === boardArr[6])
       ) {
+      // Notify the winners
       updateMsg(`Player ${player.toUpperCase()} Wins!`);
+      
+      // Update the state of the game
       isGameOver = true;
+      
+      // Update player scores
+      if (player === 'x') {
+        playerXScore += 1;
+        $($playerXScoreEl).text(playerXScore.toString());
+      } else {
+        playerOScore += 1;
+        $($playerOScoreEl).text(playerOScore.toString());
+      }
+
+      // Play again option
       $body.append(`<div class="play-again noselect">Play Again?</div>`);
       $playAgain = $('.play-again');
       $($playAgain).on('click', () => initBoard());
+    } else if (turnCounter === 8) {
+      updateMsg(`It's a draw!`);
+
+      // Play again option
+      $body.append(`<div class="play-again noselect">Play Again?</div>`);
+      $playAgain = $('.play-again');
+      $($playAgain).on('click', () => initBoard());
+
     } else {
       player === 'x' ? curPlayer = 'o' : curPlayer = 'x';
+      turnCounter += 1;
       updateMsg(`Player ${curPlayer.toUpperCase()}'s move`);
     }
   };
@@ -108,12 +139,13 @@ $(document).ready(() => {
       $gameBoard.remove();
       $playAgain.remove();
     }
-    // Init the boardarr, create the board, init the player at turn, init isGameOver var, adds event handler to tiles
+    // Init the boardArr, create the board, init the player at turn, init isGameOver var, adds event handler to tiles
     boardArr = [];
     createBoard();
     curPlayer = 'x';
     updateMsg('Player X\'s move');
     isGameOver = false;
+    turnCounter = 0;
     $tile = $('.tile');
     $($tile).on('click', (e) => handleTileClick(e));
   }
